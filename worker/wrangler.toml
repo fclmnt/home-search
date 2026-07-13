@@ -1,0 +1,7 @@
+name = "home-search-votes"
+main = "index.js"
+compatibility_date = "2026-07-01"
+
+[[kv_namespaces]]
+binding = "VOTES"
+id = "d4d0def19b3d415d902ca1eb3d3fb708"
