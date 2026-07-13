@@ -17,6 +17,14 @@ LOG="logs/run-$(date +%Y%m%d-%H%M).log"
   python3 scripts/make_xlsx.py
   python3 scripts/make_site.py
   echo "=== Sorties régénérées : $(date) ==="
+  # Publier sur GitHub Pages
+  git add -A
+  if ! git diff --cached --quiet; then
+    git commit -m "Mise à jour des annonces — $(date '+%Y-%m-%d %H:%M')" -q && git push -q
+    echo "=== Publié sur GitHub Pages : $(date) ==="
+  else
+    echo "=== Aucun changement à publier ==="
+  fi
 } >> "$LOG" 2>&1
 
 # Garder seulement les 30 derniers logs
