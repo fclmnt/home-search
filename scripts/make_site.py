@@ -200,15 +200,15 @@ function card(a) {
       </div>
       <div class="metro"><span class="dot ${ligneClass(a.ligne_metro)}"></span>${esc(a.station_metro)} · ${esc(a.minutes_a_pied)} min à pied</div>
       <div class="notes" onclick="this.classList.toggle('open')" title="${esc(a.notes)}">${esc(a.notes)}</div>
+      <div class="actions">
+        <a class="btn primary" href="${esc(a.lien)}" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+        <button class="btn btn-vu"></button>
+      </div>
       ${VOTE_API ? `
       <div class="votes">
         <button class="vote-btn oui ${t.mien > 0 ? "actif" : ""}" ${votesOk ? "" : "disabled"}>Oui <span>${t.oui}</span></button>
         <button class="vote-btn non ${t.mien < 0 ? "actif" : ""}" ${votesOk ? "" : "disabled"}>Non <span>${t.non}</span></button>
       </div>` : ""}
-      <div class="actions">
-        <a class="btn primary" href="${esc(a.lien)}" target="_blank" rel="noopener">Voir l'annonce ↗</a>
-        <button class="btn btn-vu"></button>
-      </div>
     </div>`;
 
   const btn = el.querySelector(".btn-vu");
