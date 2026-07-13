@@ -55,6 +55,7 @@ page = """<!DOCTYPE html>
   .photo { position: relative; aspect-ratio: 16/10; background: linear-gradient(135deg, #3c5a6a, #1f4e5f); }
   .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .photo .noimg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 42px; }
+  .photo .noimg[hidden] { display: none; }
   .badge-new {
     position: absolute; top: 10px; left: 10px; background: var(--new-bg); color: var(--new);
     font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
@@ -131,7 +132,7 @@ function card(a) {
   const balcon = a.balcon === "oui" ? "balcon ✓" : (a.balcon === "non" ? "sans balcon" : "balcon n/d");
   el.innerHTML = `
     <div class="photo">
-      ${a.photo ? `<img src="${esc(a.photo)}" alt="" loading="lazy" onerror="this.remove()">` : ""}
+      ${a.photo ? `<img src="${esc(a.photo)}" alt="" loading="lazy" onerror="this.nextElementSibling.hidden=false;this.remove()">` : ""}
       <div class="noimg" ${a.photo ? "hidden" : ""}>🏢</div>
       ${a.statut === "NOUVEAU" ? '<span class="badge-new">NOUVEAU</span>' : ""}
       <span class="badge-score">${esc(a.score)}/10</span>
