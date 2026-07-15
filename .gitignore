@@ -2,3 +2,4 @@ logs/
 .DS_Store
 .fb-profile/
 marketplace-raw.json
+scripts/_*.py
