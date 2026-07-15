@@ -12,6 +12,8 @@ LOG="logs/run-$(date +%Y%m%d-%H%M).log"
     --model sonnet \
     --allowedTools "WebSearch,WebFetch,Read,Write,Edit,Glob,Grep,Bash(python3:*)"
   echo "=== Recherche terminée : $(date) (code $?) ==="
+  # Retirer les annonces expirées (garde-fou intégré : n'efface rien si >50% semblent mortes)
+  python3 scripts/check_links.py
   # Filet de sécurité : régénérer photos, Excel et site même si l'agent a oublié
   python3 scripts/fetch_photos.py
   python3 scripts/make_xlsx.py

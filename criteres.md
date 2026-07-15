@@ -51,7 +51,8 @@ Procédure :
 5. Ajouter les nouvelles annonces avec `statut` = « NOUVEAU » et `date_ajout` = date du jour (AAAA-MM-JJ).
 6. **Score sur 10** : superficie ≥1100 (+3), 900-1099 (+2) ; 2 chambres (+1), 3+ (+2) ; balcon (+2) ; ligne verte ≤12 min (+2), autre ligne ≤12 min (+1) ; quartier vivant/commerçant (+1). (Le prix n'entre pas dans le score : la fourchette 1900-2400 $ est déjà un critère éliminatoire.)
 7. Trier le fichier : NOUVEAU d'abord, puis par score décroissant.
-8. Régénérer les sorties : `python3 scripts/fetch_photos.py && python3 scripts/make_xlsx.py && python3 scripts/make_site.py`
+8. Retirer les annonces expirées : `python3 scripts/check_links.py` (ne pas s'inquiéter si son code de sortie est 1 — c'est son garde-fou anti-suppression massive).
+9. Régénérer les sorties : `python3 scripts/fetch_photos.py && python3 scripts/make_xlsx.py && python3 scripts/make_site.py`
 
 ## Règles
 
