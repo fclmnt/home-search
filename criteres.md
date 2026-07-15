@@ -29,7 +29,7 @@ Utilise WebSearch et WebFetch pour chercher sur :
 - logisquebec.com
 - lespac.com
 
-Facebook Marketplace n'est pas accessible sans connexion — ne pas essayer.
+Facebook Marketplace n'est pas accessible sans connexion — ne JAMAIS essayer d'ouvrir facebook.com directement. À la place : si le fichier `marketplace-raw.json` existe et que son champ `scraped_at` date de moins de 24 h, lire ses `items` (annonces déjà pré-filtrées 1900-2400 $ par le scraper). Pour chaque item : évaluer les critères à partir de `carte` et `extrait` (chambres, superficie — mettre « n/d » si absente et n'inclure que si 5½/3 chambres probable ; estimer la station de métro à partir du lieu). Ajouter les items conformes au CSV avec site=Marketplace, lien=url, photo=image. Noter dans `notes` que le lien exige une connexion Facebook.
 
 Fais plusieurs recherches variées (par quartier, par nombre de pièces « 4 1/2 », « 5 1/2 », par mots-clés comme « balcon », etc.). Ouvre les pages de résultats et les annonces individuelles pour extraire les détails réels. Ne jamais inventer une annonce : chaque ligne doit provenir d'une page réellement consultée, avec son URL exacte.
 

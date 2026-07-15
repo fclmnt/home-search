@@ -8,6 +8,8 @@ mkdir -p logs
 LOG="logs/run-$(date +%Y%m%d-%H%M).log"
 {
   echo "=== Recherche démarrée : $(date) ==="
+  # Scraper Marketplace (session Facebook dédiée) — non bloquant en cas d'échec
+  python3 scripts/fetch_marketplace.py || echo "Marketplace ignoré (voir message ci-dessus)"
   claude -p "$(cat criteres.md)" \
     --model sonnet \
     --allowedTools "WebSearch,WebFetch,Read,Write,Edit,Glob,Grep,Bash(python3:*)"

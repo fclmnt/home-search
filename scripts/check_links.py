@@ -74,7 +74,8 @@ def main():
 
     kept, removed, unknown = [], [], 0
     for r in rows:
-        if not r["lien"].startswith("http"):
+        # Marketplace exige une connexion : impossible à vérifier sans session, on conserve
+        if not r["lien"].startswith("http") or "facebook.com" in r["lien"]:
             kept.append(r)
             continue
         s = status(r["lien"])
