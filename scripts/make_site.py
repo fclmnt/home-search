@@ -123,7 +123,7 @@ page = """<!DOCTYPE html>
     <option value="score">Tri : score</option>
     <option value="prix">Tri : prix croissant</option>
     <option value="pi2">Tri : superficie</option>
-    <option value="date">Tri : plus récentes</option>
+    <option value="date" selected>Tri : plus récentes</option>
   </select>
   <label><input type="checkbox" id="fMasquer"> Masquer les annonces vues</label>
   <span class="count" id="count"></span>
@@ -278,8 +278,6 @@ async function init() {
     } catch {
       document.getElementById("offline").hidden = false;
     }
-  } else {
-    document.getElementById("fTri").value = "score";
   }
   render();
 }

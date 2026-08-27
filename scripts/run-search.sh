@@ -8,6 +8,13 @@ mkdir -p logs
 LOG="logs/run-$(date +%Y%m%d-%H%M).log"
 {
   echo "=== Recherche démarrée : $(date) ==="
+  # Se synchroniser avec le dépôt distant avant de générer quoi que ce soit,
+  # sinon un commit poussé ailleurs (ex. GitHub web) fait diverger la branche
+  # et tous les push suivants sont rejetés.
+  if ! git pull --rebase --autostash -q; then
+    git rebase --abort 2>/dev/null
+    echo "!!! ÉCHEC git pull --rebase : conflit avec le dépôt distant, intervention manuelle requise"
+  fi
   # Scraper Marketplace (session Facebook dédiée) — non bloquant en cas d'échec
   python3 scripts/fetch_marketplace.py || echo "Marketplace ignoré (voir message ci-dessus)"
   claude -p "$(cat criteres.md)" \
@@ -24,8 +31,12 @@ LOG="logs/run-$(date +%Y%m%d-%H%M).log"
   # Publier sur GitHub Pages
   git add -A
   if ! git diff --cached --quiet; then
-    git commit -m "Mise à jour des annonces — $(date '+%Y-%m-%d %H:%M')" -q && git push -q
-    echo "=== Publié sur GitHub Pages : $(date) ==="
+    git commit -m "Mise à jour des annonces — $(date '+%Y-%m-%d %H:%M')" -q
+    if git push -q; then
+      echo "=== Publié sur GitHub Pages : $(date) ==="
+    else
+      echo "!!! ÉCHEC du push : $(date) — commit local conservé, site NON mis à jour"
+    fi
   else
     echo "=== Aucun changement à publier ==="
   fi
