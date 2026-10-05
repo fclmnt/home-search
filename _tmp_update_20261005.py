@@ -1,72 +1,54 @@
 import csv
 
-with open('annonces.csv', newline='', encoding='utf-8') as f:
+PATH = "annonces.csv"
+
+with open(PATH, newline="", encoding="utf-8") as f:
     reader = csv.DictReader(f)
     fieldnames = reader.fieldnames
     rows = list(reader)
 
-# flip old NOUVEAU -> vu
+# 1. Pass old NOUVEAU to vu
 for r in rows:
-    if r['statut'] == 'NOUVEAU':
-        r['statut'] = 'vu'
+    if r["statut"] == "NOUVEAU":
+        r["statut"] = "vu"
 
-new_rows = [
-{
- 'date_ajout': '2026-10-05',
- 'statut': 'NOUVEAU',
- 'titre': '5½ (3 chambres fermées), proche métro Jarry - secteur rue Saint-Denis, Villeray',
- 'quartier': 'Villeray',
- 'adresse': '8321, Rue Saint-Denis, Montréal, QC',
- 'prix': '1975',
- 'superficie_pi2': 'n/d',
- 'chambres': '3',
- 'balcon': 'n/d',
- 'station_metro': 'Jarry',
- 'ligne_metro': 'orange',
- 'minutes_a_pied': '5 (estimé)',
- 'site': 'Centris',
- 'lien': 'https://www.centris.ca/en/condos-apartments~for-rent~montreal-villeray-saint-michel-parc-extension/28716271',
- 'score': '4',
- 'notes': "Immeuble de 1955, planchers de bois franc, cuisine renovee, a distance de marche d'un cegep, garderie, parc, piste cyclable et ecoles. Disponible 5 jours apres acceptation de la promesse de location. Balcon et superficie non precises par l'annonce. Distance au metro Jarry estimee a partir de l'adresse (non confirmee par l'annonce).",
- 'photo': '',
-},
-{
- 'date_ajout': '2026-10-05',
- 'statut': 'NOUVEAU',
- 'titre': '4½ rénové (2 chambres, sous-sol), 1080 pi² - rue Marie-Anne Est, Plateau-Mont-Royal',
- 'quartier': 'Le Plateau-Mont-Royal',
- 'adresse': '2484, Rue Marie-Anne Est, app. 1, Montréal, QC',
- 'prix': '1995',
- 'superficie_pi2': '1080',
- 'chambres': '2',
- 'balcon': 'n/d',
- 'station_metro': 'Mont-Royal',
- 'ligne_metro': 'orange',
- 'minutes_a_pied': '9 (estimé)',
- 'site': 'Centris',
- 'lien': 'https://www.centris.ca/en/condos-apartments~for-rent~montreal-le-plateau-mont-royal/27584406',
- 'score': '5',
- 'notes': "Logement au sous-sol, climatisation centrale, animaux non acceptes, disponible 5 jours apres acceptation de la promesse de location, Walk Score 97, a distance de marche des metros Mont-Royal et Frontenac (temps estime, non precise par l'annonce). Note : une autre annonce (LogisQuebec, l353552) existe a la meme adresse civique pour un autre logement (4half condo 2019, 2075$) - probablement une unite differente du meme immeuble.",
- 'photo': '',
-},
-]
+# 2. Add new row
+new_row = {
+    "date_ajout": "2026-10-05",
+    "statut": "NOUVEAU",
+    "titre": "5½ rénové (3 chambres), 1425 pi² - rue La Fontaine, Hochelaga-Maisonneuve",
+    "quartier": "Hochelaga-Maisonneuve",
+    "adresse": "3527, Rue La Fontaine, Montréal, QC",
+    "prix": "2100",
+    "superficie_pi2": "1425",
+    "chambres": "3",
+    "balcon": "n/d",
+    "station_metro": "Joliette",
+    "ligne_metro": "verte",
+    "minutes_a_pied": "10 (estimé, 850m)",
+    "site": "Centris",
+    "lien": "https://www.centris.ca/fr/condo-appartement~a-louer~montreal-mercier-hochelaga-maisonneuve/16826763",
+    "score": "8",
+    "notes": "Portes-fenetres cuisine/salon, 2 chambres avec fenetre sur 3, Walk Score 98, a 850m (environ 10 min a pied) du metro Joliette (ligne verte), pres de la Promenade Ontario (commerces, restaurants). Disponible immediatement ou 10 jours apres acceptation de la promesse de location. Balcon non precise par l'annonce. Visite libre annoncee le lundi 5 octobre 18h-19h.",
+    "photo": "",
+}
+rows.append(new_row)
 
-rows.extend(new_rows)
-
-def score_key(r):
-    is_new = 0 if r['statut'] == 'NOUVEAU' else 1
+# 3. Sort: NOUVEAU first, then score descending
+def sort_key(r):
+    is_nouveau = 0 if r["statut"] == "NOUVEAU" else 1
     try:
-        s = -int(r['score'])
-    except Exception:
-        s = 0
-    return (is_new, s)
+        score = -int(r["score"])
+    except (ValueError, TypeError):
+        score = 0
+    return (is_nouveau, score)
 
-rows.sort(key=score_key)
+rows.sort(key=sort_key)
 
-with open('annonces.csv', 'w', newline='', encoding='utf-8') as f:
+with open(PATH, "w", newline="", encoding="utf-8") as f:
     writer = csv.DictWriter(f, fieldnames=fieldnames)
     writer.writeheader()
     writer.writerows(rows)
 
-print('total rows:', len(rows))
-print('NOUVEAU count:', sum(1 for r in rows if r['statut'] == 'NOUVEAU'))
+print("Done. Total rows:", len(rows))
+print("NOUVEAU count:", sum(1 for r in rows if r["statut"] == "NOUVEAU"))
